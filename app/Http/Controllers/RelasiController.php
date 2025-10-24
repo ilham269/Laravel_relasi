@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Mahasiswa;
 use App\Models\Wali;
 use App\Models\Dosen;
+use App\Models\Hobi;
 
 class RelasiController extends Controller
 {
@@ -22,5 +23,18 @@ class RelasiController extends Controller
         // Ambil dosen beserta mahasiswa bimbingannya
         $dosens = Dosen::with('mahasiswas')->get();
         return view('relasi.one_to_many', compact('dosens'));
+    }
+     public function manyToMany()
+    {
+        $mahasiswas = Mahasiswa::with('hobis')->get();
+        return view('relasi.many_to_many', compact('mahasiswas'));
+    }
+     public function eloquent()
+    {
+        // Ambil semua data mahasiswa lengkap dengan relasinya
+        $mahasiswa = Mahasiswa::with('wali', 'dosen', 'hobis')->get();
+
+        // Kirim data ke view
+        return view('relasi.eloquent', compact('mahasiswa'));
     }
 }

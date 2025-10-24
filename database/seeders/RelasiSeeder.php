@@ -15,12 +15,12 @@ class RelasiSeeder extends Seeder
     public function run(): void
     {
         $mahasiswa =Mahasiswa::create([
-            'nama' => 'Andi',
+            'nama' => 'ilham',
             'nim' => '123456',
         ]);
 
         Wali::create([
-            'nama' => 'Budi',
+            'nama' => 'fathahilah',
             'id_mahasiswa' => $mahasiswa->id,
         ]);
     }

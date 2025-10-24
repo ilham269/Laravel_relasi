@@ -24,7 +24,7 @@ class DosenMahasiswaSeeder extends Seeder
             'nipd' => '12'
         ]);
              $dosen1->mahasiswas()->createMany([
-            ['nama' => 'Candra Herdiansyah', 'nim' => '123456'],
+            ['nama' => 'ilhamm', 'nim' => '123456'],
             ['nama' => 'Rizky Ramadhan', 'nim' => '123457'],
         ]);
 

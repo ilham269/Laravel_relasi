@@ -10,55 +10,120 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <!-- Styles -->
+
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <!-- Scripts -->
+
+    <!-- ✅ Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            height: 100vh;
+            background: #0d6efd;
+            color: #fff;
+            position: fixed;
+            width: 240px;
+            top: 0;
+            left: 0;
+            padding-top: 60px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a {
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: #0b5ed7;
+        }
+
+        .sidebar .active {
+            background: #084298;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 20px;
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #0d6efd !important;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                left: -240px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .content {
+                margin-left: 0;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-md bg-white shadow-sm">
+            <div class="container-fluid">
+                <button class="btn btn-outline-primary d-lg-none me-3" id="toggleSidebar">
+                    <i class="bi bi-list"></i>
+                </button>
                 <a class="navbar-brand" href="{{ url('/') }}">
+                    <i class="bi bi-house-door-fill me-1"></i> 
                     {{ config('app.name', 'Laravel') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
+                <div class="collapse navbar-collapse">
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link text-primary" href="{{ route('login') }}">
+                                        <i class="bi bi-box-arrow-in-right me-1"></i> {{ __('Login') }}
+                                    </a>
                                 </li>
                             @endif
-
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link text-primary" href="{{ route('register') }}">
+                                        <i class="bi bi-person-plus me-1"></i> {{ __('Register') }}
+                                    </a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-primary" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <i class="bi bi-person-circle me-1"></i> {{ Auth::user()->name }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="bi bi-box-arrow-right me-1"></i> {{ __('Logout') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -72,11 +137,33 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <a href="{{ url('/home') }}" class="{{ request()->is('home') ? 'active' : '' }}">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="{{ url('/daftarcrud') }}" class="{{ request()->is('daftarcrud') ? 'active' : '' }}">
+                <i class="bi bi-card-list"></i> Daftar CRUD
+            </a>
+            <a href="">
+                <i class="bi bi-gear"></i> Pengaturan
+            </a>
+        </div>
+
+        <!-- Main Content -->
+        <main class="content py-4">
             @yield('content')
         </main>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleSidebar');
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
