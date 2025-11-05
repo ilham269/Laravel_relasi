@@ -15,6 +15,14 @@ use App\Http\Controllers\muridcontroller;
 use App\Http\Controllers\barangcontroller;
 use App\Http\Controllers\pembelicontroller;
 use App\Http\Controllers\transaksicontroller;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\suppliercontroller;
+use App\Http\Controllers\productcontroller;
+use App\Http\Controllers\employesscontroller;
+use App\Http\Controllers\customercontroller;
+use App\Http\Controllers\ordercontroller;
+use App\Http\Controllers\order_detailcontroller;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -55,3 +63,21 @@ Route::get('daftarcrud', function () {
 Route::resource('barang', barangcontroller::class);
 Route::resource('pembeli', pembelicontroller::class);
 Route::resource('transaksi', transaksicontroller::class);
+Route::get('profile', function () {
+    return view('profile');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/home', [ProfileController::class, 'update'])->name('profile.home');
+});
+Route::get('home', function () {
+    return view('home');
+});
+Route::resource('suppliers', suppliercontroller::class);
+Route::resource('products', productcontroller::class);
+Route::resource('employees', employesscontroller::class);
+Route::resource('customer', customercontroller::class);
+Route::resource('order', ordercontroller::class);
+Route::resource('order_detail', order_detailcontroller::class);
